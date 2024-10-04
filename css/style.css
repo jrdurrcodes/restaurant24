@@ -26,6 +26,16 @@ body {
     scroll-behavior: smooth;
 }
 
+.about-div {
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0px 3px 3px #aaa;
+}
+
+.banner-img {
+    height: 45vh;
+}
+
 .blurb {
     color: var(--textColor);
     font-size: 1.7rem;
@@ -106,6 +116,12 @@ body {
     background-color: #000;
     opacity: .68;
 }
+
+#aboutSection {
+    background-color: var(--bg1);
+    padding: 40px;
+}
+
 #carouselSection {
     position: relative;
     background-image: url(../images/alex-munsell-Yr4n8O_3UPc-unsplash.jpg);
