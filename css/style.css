@@ -42,6 +42,10 @@ body {
     font-weight: 200;
 }
 
+.carousel-img {
+    height: 45vh;
+}
+
 .colophon {
     color: var(--yellow);
     font-weight: 200;
