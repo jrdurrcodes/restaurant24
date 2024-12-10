@@ -4,7 +4,12 @@ class Store {
         // track how many items are in the cart and the subtotal of the items
         this.itemsInCart = {
             itemCount: 0,
-            subtotal: 0
+            price: 0,
+            subtotal: 0,
+            subTimesQty: 0,
+            tax: 0,
+            deliveryFee: 6,
+            total: 0
         }
 
         this.menu ={
@@ -12,7 +17,7 @@ class Store {
             item1: {
                 id: 1,
                 dish: 'spaghetti',
-                imgUrl: 'spaghetti',
+                imgUrl: 'images/spaghetti.jpg',
                 alt: 'spaghetti',
                 desc: 'noodles with meatsauce meatballs and parsely',
                 price: 15.99,
@@ -21,7 +26,7 @@ class Store {
             item2: {
                 id: 2,
                 dish: 'bakedfish',
-                imgUrl: 'bakedfish',
+                imgUrl: 'images/bakedfish.jpg',
                 alt: 'bakedfish with buttersauce',
                 desc: 'baked fish drizzeld with butter sauce and vegetables',
                 price: 18.99,
@@ -30,16 +35,16 @@ class Store {
             item3: {
                 id: 3,
                 dish:'the satchel',
-                imgUrl: 'grilled_cheese',
-                alt: 'grilled cheese sandwich with tomato soup',
-                desc: 'Our specialty item. Pepper jack',
+                imgUrl: 'images/grilledcheese.jpg',
+                alt: 'grilled cheese sandwich with avocado spread',
+                desc: 'Our specialty item Pepper jack',
                 price: 10.99,
                 qty: 0
             },
             item4: {
                 id: 4, 
                 dish: 'ceasar salad',
-                imgUrl: 'salad',
+                imgUrl: 'images/ceasarsalad.jpg',
                 alt: 'ceasar salad',
                 desc: 'colorful leafy greens topped with, feta cheese and ceasar dressing',
                 price: 6.99,
@@ -48,7 +53,7 @@ class Store {
             items5: {
                 id: 5,
                 dish: 'vegetable soup',
-                imgUrl: 'vegetable soup',
+                imgUrl: 'images/vegetablesoup.jpg',
                 alt: 'vegetable soup',
                 desc: 'homemade broth filled with mixed vegetables and noodles',
                 price: 12.99,
@@ -57,7 +62,7 @@ class Store {
             item6: {
                 id: 6, 
                 dish: 'cheeseburger',
-                imgUrl: 'cheeseburger',
+                imgUrl: 'images/cheeseburger.jpg',
                 alt: 'cheeseburger',
                 desc: 'toasted bun with grilled beef tomatoes lettuce pickle and ketchup with wedge cut fries',
                 price: 15.99,
@@ -66,7 +71,7 @@ class Store {
             item7: {
                 id: 7, 
                 dish: 'chickenwings',
-                imgUrl: 'chickenwings',
+                imgUrl: 'images/friedwings.jpg',
                 alt: 'fried drummettes',
                 desc:'lemon pepper fried drummettes',
                 price: 13.99,
@@ -75,7 +80,7 @@ class Store {
             item8: {
                 id: 8, 
                 dish: 'macaronni',
-                imgUrl: 'macaronni',
+                imgUrl: 'images/macaroni.jpg',
                 alt: 'macaronni',
                 desc: 'creamy cheesy macarroni',
                 price: 6.99,
@@ -89,6 +94,8 @@ class Store {
         this.loadItems()
         this.addToCart()
         this.checkout()
+        this.homeSwitch()
+        this.confirmOrder()
     }
 
     loadItems() {
@@ -125,16 +132,11 @@ class Store {
         const menuButtons = document.querySelectorAll('.menu-btn')
         const cartItems = document.getElementById('cartItems')
         const cartSubtotal = document.getElementById('cartSubtotal')
-        let price = 0
-    
-        let subTimesQty = 0
         const subtotalValue = document.getElementById('subtotalValue')
-        const Value = document.getElementById('taxValue')
-        let tax = 0
+        const taxValue = document.getElementById('taxValue')
         const deliveryValue = document.getElementById('deliveryValue')
         const checkoutItemCount = document.getElementById('checkoutItemCount')
-        let deliveryFee = 6
-        let total = 0
+        
         let taxRate = .07
         const totalValue = document.getElementById('totalValue')
     
@@ -147,29 +149,27 @@ class Store {
                 button.addEventListener('click', ()=> {
                 if (button.dataset['id'] == item.id) {
                     this.itemsInCart.itemCount++
-                    price+= item.price
-                    this.itemsInCart.subtotal = price
+                    this.itemsInCart.price+= item.price
+                    this.itemsInCart.subtotal = this.itemsInCart.price
     
                     item.qty++
     
-                        subTimesQty = (item.price * item.qty).toFixed(2)
-                        tax = this.itemsInCart.subtotal * taxRate
-                        total = (this.itemsInCart.subtotal + tax + deliveryFee).toFixed(2)
+                        this.itemsInCart.subTimesQty = (item.price * item.qty).toFixed(2)
+                        this.itemsInCart.tax = this.itemsInCart.subtotal * taxRate
+                        this.itemsInCart.total = (this.itemsInCart.subtotal + tax + this.itemsInCart.deliveryFee).toFixed(2)
                     }
-                        //sendt to DOM
-                        cartItems.innerText = this.itemsInCart.itemCount
-                        cartSubtotal.innerText = price.toFixed(2)
-                        subtotalValue.innerText = this.itemsInCart.subtotal.toFixed(2)
-                        deliveryValue.innerText = deliveryFee.toFixed(2)
-                        taxValue.innerText = tax.toFixed(2)
-                        totalValue.innerText = total
+                    //send to DOM
+                    cartItems.innerText = this.itemsInCart.itemCount
+                    cartSubtotal.innerText = this.itemsInCart.price.toFixed(2)
+                    subtotalValue.innerText = this.itemsInCart.subtotal.toFixed(2)
+                    deliveryValue.innerText = this.itemsInCart.deliveryFee.toFixed(2)
+                    taxValue.innerText = this.itemsInCart.tax.toFixed(2)
+                    totalValue.innerText = this.itemsInCart.total
 
-                        if (this.itemsInCart.itemCount == 1) {
-                            checkoutItemCount.innerText
+                    //if (this.itemsInCart.itemCount == 1) {
+                        //checkoutItemCount.innerText
 
-                        
-                        }
-                        checkoutItemCount.innerText = this.itemsInCart.itemCount == 1 ? `${this.itemsInCart.itemCount} item` : `${this.itemsInCart.itemCount} items`
+                    checkoutItemCount.innerText = this.itemsInCart.itemCount == 1 ? `${this.itemsInCart.itemCount} item` : `${this.itemsInCart.itemCount} items`
                     })
                 })
             }
@@ -213,7 +213,62 @@ class Store {
                 }
             })
         }
-    }   
+
+    homeSwitch() {
+        const homeSwitch = document.querySelector('.home-switch')
+        const checkoutPage = document.getElementById('checkoutPage')
+        const menuSection = document.getElementById('menuSection')    
+        
+        homeSwitch.style.cursor  = 'pointer'
+
+        homeSwitch.addEventListener('click', ()=> {
+           // console.log('clicked')
+            menuSection.classList.remove('d-none')
+            checkoutPage.classList.add('d-none')
+
+            const tableBody = document.getElementById('tbody')
+            tableBody.innerHTML = ''
+        })
+    }    
+        confirmOrder() {
+            const confirmBtn = document.getElementById('confirmBtn')
+            const tableBody = document.getElementById('tbody')
+            const cartItems = document.getElementById('cartItems')
+            const cartSubtotal = document.getElementById('cartSubtotal')
+            const subtotalValue = document.getElementById('subtotalValue')
+            const taxValue = document.getElementById('taxValue')
+            const totalValue = document.getElementById('totalValue')
+
+            confirmBtn.addEventListener('click', ()=>{
+               //this.itemInCart.itemCount = 0
+               // this.itemInCart.subtotal = 0
+                for (const key in this.itemsInCart) {
+                    if(key != 'deliveryFee'){
+                        this.itemsInCart[key] 
+                    }
+                }
+
+                tableBody.innerHTML = '<h2>Your order is confirmed</h2>'
+
+                cartItems.innerText = this.itemsInCart.itemCount
+                cartSubtotal.innerText = this.itemsInCart.subtotal.toFixed(2)
+                subtotalValue.innerText = 0
+                taxValue.innerText = 0
+                totalValue.innerText = 0
+
+                for (const key in this.menu) {
+                    const item = this.menu[key]
+
+                    item.qty = 0
+                }
+
+            })
+
+        }
+    }    
+
+
+
 
 
 const restaurant = new Store()
